@@ -8,7 +8,7 @@ class naju_contacts_update
             select group_id
             from naju_local_group
             where group_id not in (select group_id from naju_contact_info)
-        EOSQL;
+EOSQL;
 
         $sql = rex_sql::factory()->setQuery($new_groups_query);
         $missing_groups = $sql->getArray();
