@@ -10,11 +10,14 @@ if ($func == 'update' && $group) {
     $city = rex_post('city');
     $email = rex_post('email');
     $phone = rex_post('phone');
+		$insta = rex_post('insta');
+		$facebook = rex_post('facebook');
 
     $sql = rex_sql::factory();
     $sql->setTable('naju_contact_info');
     $sql->setWhere(['group_id' => $group]);
-    $sql->setValues(['office_name' => $office, 'street' => $street, 'city' => $city, 'email' => $email, 'phone' => $phone]);
+    $sql->setValues(['office_name' => $office, 'street' => $street, 'city' => $city,
+			'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook]);
     $sql->update();
 }
 
@@ -33,7 +36,9 @@ if (rex::getUser()->isAdmin()) {
             c.street,
             c.city,
             c.email,
-            c.phone
+            c.phone,
+						c.instagram,
+						c.facebook
         from
             naju_contact_info c
                 join naju_local_group g on c.group_id = g.group_id
@@ -49,7 +54,9 @@ EOSQL;
             c.street,
             c.city,
             c.email,
-            c.phone
+            c.phone,
+						c.instagram,
+						c.facebook
         from
             naju_contact_info c
                 join naju_local_group g on c.group_id = g.group_id
@@ -64,38 +71,50 @@ $content .= '<div class="container-fluid" style="padding: 15px;"><div class="row
 
 foreach ($local_groups as $group) {
     $content .= '<div class="col-md-4"><article class="panel panel-default">';
-    $content .= '<header class="panel-heading"><h3 class="panel-title">' . htmlspecialchars($group['group_name']) . '</h3></header>';
+    $content .= '<header class="panel-heading"><h3 class="panel-title">' . rex_escape($group['group_name']) . '</h3></header>';
     $content .= '<div class="panel-body"><form method="post" action="' . rex_url::currentBackendPage(['func' => 'update', 'group' => urlencode($group['group_id'])]) . '">';
-    
+
     $content .= '
         <div class="form-group">
             <label for="office_name">Büro:</label>
             <input type="text" name="office_name" id="office_name" autocomplete="off"
-                placeholder="Wie heißt das Büro?" class="form-control" value="' . htmlspecialchars($group['office_name']) . '">
+                placeholder="Wie heißt das Büro?" class="form-control" value="' . rex_escape($group['office_name']) . '">
         </div>';
     $content .= '
         <div class="form-group">
             <label for="street">Straße:</label>
             <input type="text" name="street" id="street" autocomplete="off"
-                placeholder="Straße / Hausnummer" class="form-control" value="' . htmlspecialchars($group['street']) . '">
+                placeholder="Straße / Hausnummer" class="form-control" value="' . rex_escape($group['street']) . '">
         </div>';
     $content .= '
         <div class="form-group">
             <label for="city">Stadt:</label>
             <input type="text" name="city" id="city" autocomplete="off"
-                placeholder="Postleitzahl / Stadt" class="form-control" value="' . htmlspecialchars($group['city']) . '">
+                placeholder="Postleitzahl / Stadt" class="form-control" value="' . rex_escape($group['city']) . '">
         </div>';
     $content .= '
         <div class="form-group">
             <label for="email">E-Mail:</label>
             <input type="email" name="email" id="email" autocomplete="off"
-                placeholder="Email" class="form-control" value="' . htmlspecialchars($group['email']) . '">
+                placeholder="Email" class="form-control" value="' . rex_escape($group['email']) . '">
         </div>';
     $content .= '
         <div class="form-group">
             <label for="phone">Telefon:</label>
             <input type="tel" name="phone" id="phone" autocomplete="off"
-                placeholder="Telefon" class="form-control" value="' . htmlspecialchars($group['phone']) . '">
+                placeholder="Telefon" class="form-control" value="' . rex_escape($group['phone']) . '">
+        </div>';
+		$content .= '
+        <div class="form-group">
+            <label for="insta">Instagram Handle:</label>
+            <input type="text" name="insta" id="insta" autocomplete="off"
+                placeholder="@Naju_sachsen" class="form-control" value="' . rex_escape($group['instagram']) . '">
+        </div>';
+		$content .= '
+        <div class="form-group">
+            <label for="facebook">Facebook-Seite:</label>
+            <input type="url" name="facebook" id="facebook" autocomplete="off"
+                placeholder="Link zur Facebook-Seite" class="form-control" value="' . rex_escape($group['facebook']) . '">
         </div>';
     $content .= '<div class="form-group pull-right"><button type="submit" class="btn btn-primary">Aktualisieren</button></div>';
 
