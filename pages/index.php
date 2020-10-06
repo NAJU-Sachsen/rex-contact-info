@@ -37,11 +37,10 @@ if (rex::getUser()->isAdmin()) {
             c.city,
             c.email,
             c.phone,
-						c.instagram,
-						c.facebook
-        from
-            naju_contact_info c
-                join naju_local_group g on c.group_id = g.group_id
+			c.instagram,
+			c.facebook
+        from naju_contact_info c
+        join naju_local_group g on c.group_id = g.group_id
 EOSQL;
     $local_groups = rex_sql::factory()->setQuery($groups_query)->getArray();
 } else {
@@ -55,14 +54,13 @@ EOSQL;
             c.city,
             c.email,
             c.phone,
-						c.instagram,
-						c.facebook
-        from
-            naju_contact_info c
-                join naju_local_group g on c.group_id = g.group_id
-                join naju_group_account a on c.group_id = a.group_id
+            c.instagram,
+			c.facebook
+        from naju_contact_info  c
+        join naju_local_group   g   on c.group_id = g.group_id
+        join naju_group_account a   on c.group_id = a.group_id
         where
-            a.account_id = ':id'
+            a.account_id = :id
 EOSQL;
     $local_groups = rex_sql::factory()->setQuery($groups_query, ['id' => $user_id])->getArray();
 }
