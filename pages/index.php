@@ -6,18 +6,19 @@ $func = rex_get('func');
 $group = rex_get('group');
 if ($func == 'update' && $group) {
     $office = rex_post('office_name');
+    $business_hours = rex_post('business_hours');
     $street = rex_post('street');
     $city = rex_post('city');
     $email = rex_post('email');
     $phone = rex_post('phone');
-		$insta = rex_post('insta');
-		$facebook = rex_post('facebook');
+	$insta = rex_post('insta');
+	$facebook = rex_post('facebook');
 
     $sql = rex_sql::factory();
     $sql->setTable('naju_contact_info');
     $sql->setWhere(['group_id' => $group]);
-    $sql->setValues(['office_name' => $office, 'street' => $street, 'city' => $city,
-			'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook]);
+    $sql->setValues(['office_name' => $office, 'business_hours' => $business_hours, 'street' => $street,
+            'city' => $city, 'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook]);
     $sql->update();
 }
 
@@ -33,6 +34,7 @@ if (rex::getUser()->isAdmin()) {
             c.group_id,
             g.group_name,
             c.office_name,
+            c.business_hours,
             c.street,
             c.city,
             c.email,
@@ -50,6 +52,7 @@ EOSQL;
             c.group_id,
             g.group_name,
             c.office_name,
+            c.business_hours,
             c.street,
             c.city,
             c.email,
@@ -70,13 +73,19 @@ $content .= '<div class="container-fluid" style="padding: 15px;"><div class="row
 foreach ($local_groups as $group) {
     $content .= '<div class="col-md-4"><article class="panel panel-default">';
     $content .= '<header class="panel-heading"><h3 class="panel-title">' . rex_escape($group['group_name']) . '</h3></header>';
-    $content .= '<div class="panel-body"><form method="post" action="' . rex_url::currentBackendPage(['func' => 'update', 'group' => urlencode($group['group_id'])]) . '">';
+    $url_params = ['func' => 'update', 'group' => urlencode($group['group_id'])];
+    $content .= '<div class="panel-body"><form method="post" action="' . rex_url::currentBackendPage($url_params) . '">';
 
     $content .= '
         <div class="form-group">
             <label for="office_name">Büro:</label>
             <input type="text" name="office_name" id="office_name" autocomplete="off"
                 placeholder="Wie heißt das Büro?" class="form-control" value="' . rex_escape($group['office_name']) . '">
+        </div>';
+    $content .= '
+        <div class="form-group">
+            <label for="business_hours">Öffnungszeiten:</label>
+            <textarea name="business_hours" id="business_hours" class="form-control">' . rex_escape($group['business_hours']) . '</textarea>
         </div>';
     $content .= '
         <div class="form-group">
