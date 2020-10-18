@@ -13,12 +13,15 @@ if ($func == 'update' && $group) {
     $phone = rex_post('phone');
 	$insta = rex_post('insta');
 	$facebook = rex_post('facebook');
+    $whatsapp = rex_post('whatsapp');
+    $telegram = rex_post('telegram');
 
     $sql = rex_sql::factory();
     $sql->setTable('naju_contact_info');
     $sql->setWhere(['group_id' => $group]);
     $sql->setValues(['office_name' => $office, 'business_hours' => $business_hours, 'street' => $street,
-            'city' => $city, 'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook]);
+            'city' => $city, 'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook,
+            'whatsapp' => $whatsapp, 'telegram' => $telegram]);
     $sql->update();
 }
 
@@ -40,7 +43,9 @@ if (rex::getUser()->isAdmin()) {
             c.email,
             c.phone,
 			c.instagram,
-			c.facebook
+            c.facebook,
+            c.whatsapp,
+            c.telegram
         from naju_contact_info c
         join naju_local_group g on c.group_id = g.group_id
 EOSQL;
@@ -58,7 +63,9 @@ EOSQL;
             c.email,
             c.phone,
             c.instagram,
-			c.facebook
+			c.facebook,
+            c.whatsapp,
+            c.telegram
         from naju_contact_info  c
         join naju_local_group   g   on c.group_id = g.group_id
         join naju_group_account a   on c.group_id = a.group_id
@@ -111,17 +118,29 @@ foreach ($local_groups as $group) {
             <input type="tel" name="phone" id="phone" autocomplete="off"
                 placeholder="Telefon" class="form-control" value="' . rex_escape($group['phone']) . '">
         </div>';
-		$content .= '
+    $content .= '
         <div class="form-group">
             <label for="insta">Instagram Handle:</label>
             <input type="text" name="insta" id="insta" autocomplete="off"
                 placeholder="@Naju_sachsen" class="form-control" value="' . rex_escape($group['instagram']) . '">
         </div>';
-		$content .= '
+    $content .= '
         <div class="form-group">
             <label for="facebook">Facebook-Seite:</label>
             <input type="url" name="facebook" id="facebook" autocomplete="off"
                 placeholder="Link zur Facebook-Seite" class="form-control" value="' . rex_escape($group['facebook']) . '">
+        </div>';
+    $content .= '
+        <div class="form-group">
+            <label for="whatsapp">Whatsapp-Kanal:</label>
+            <input type="url" name="whatsapp" id="whatsapp" autocomplete="off"
+                placeholder="Link zum Whatsapp-Kanal" class="form-control" value="' . rex_escape($group['whatsapp']) . '">
+        </div>';
+    $content .= '
+        <div class="form-group">
+            <label for="telegram">Telegram-Kanal:</label>
+            <input type="url" name="telegram" id="telegram" autocomplete="off"
+                placeholder="Link zum Telegram-Kanal" class="form-control" value="' . rex_escape($group['telegram']) . '">
         </div>';
     $content .= '<div class="form-group pull-right"><button type="submit" class="btn btn-primary">Aktualisieren</button></div>';
 

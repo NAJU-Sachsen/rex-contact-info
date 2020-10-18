@@ -9,6 +9,8 @@ create table if not exists naju_contact_info (
 	phone 					varchar(20) 	default '',
 	instagram 			varchar(120) 	default '',
 	facebook 				varchar(120) 	default '',
+	whatsapp				varchar(120)	default '',
+	telegram				varchar(120)	default '',
 
 	primary key (group_id),
 	foreign key fk_contact_group (group_id) references naju_local_group(group_id)
