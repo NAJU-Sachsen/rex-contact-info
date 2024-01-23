@@ -159,7 +159,8 @@ foreach ($local_groups as $group) {
         <div class="form-group">
             <label for="seo-description">Telegram-Kanal:</label>
             <textarea name="seo-description" id="seo-description" autocomplete="off"
-                placeholder="Link zum Telegram-Kanal" class="form-control">' .
+                placeholder="Beschreibung der Ortsgruppe für Suchmaschinen (wird von Seitenbeschreibungen überschrieben)"
+                class="form-control">' .
                 rex_escape($group['seo_description']) .
             '</textarea>
         </div>';
