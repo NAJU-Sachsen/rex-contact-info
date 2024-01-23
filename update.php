@@ -24,3 +24,11 @@ if (rex_version::compare($this->getVersion(), '0.0.4', '<')) {
 		->ensureColumn(new rex_sql_column('telegram', 'varchar(120)', false, ''))
 		->alter();
 }
+
+if (rex_version::compare($this->getVersion(), '0.0.5', '<')) {
+	// Update to 0.0.5 from something older
+	rex_sql_table::get($t_contact_info)
+		->ensureColumn(new rex_sql_column('seo_title_prefix', 'varchar(191)', false, ''))
+		->ensureColumn(new rex_sql_column('seo_description', 'text', false, ''))
+		->alter();
+}

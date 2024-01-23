@@ -15,13 +15,16 @@ if ($func == 'update' && $group) {
 	$facebook = rex_post('facebook');
     $whatsapp = rex_post('whatsapp');
     $telegram = rex_post('telegram');
+    $seo_title = rex_post('seo-title');
+    $seo_description = rex_post('seo-description');
 
     $sql = rex_sql::factory();
     $sql->setTable('naju_contact_info');
     $sql->setWhere(['group_id' => $group]);
-    $sql->setValues(['office_name' => $office, 'business_hours' => $business_hours, 'street' => $street,
-            'city' => $city, 'email' => $email, 'phone' => $phone, 'instagram' => $insta, 'facebook' => $facebook,
-            'whatsapp' => $whatsapp, 'telegram' => $telegram]);
+    $sql->setValues(['office_name' => $office, 'business_hours' => $business_hours,
+            'street' => $street, 'city' => $city, 'email' => $email, 'phone' => $phone,
+            'instagram' => $insta, 'facebook' => $facebook, 'whatsapp' => $whatsapp, 'telegram' => $telegram,
+            'seo_title_prefix' => $seo_title, 'seo_description' => $seo_description]);
     $sql->update();
 }
 
@@ -45,7 +48,9 @@ if (rex::getUser()->isAdmin()) {
 			c.instagram,
             c.facebook,
             c.whatsapp,
-            c.telegram
+            c.telegram,
+            c.seo_title_prefix,
+            c.seo_description,
         from naju_contact_info c
         join naju_local_group g on c.group_id = g.group_id
 EOSQL;
@@ -65,7 +70,9 @@ EOSQL;
             c.instagram,
 			c.facebook,
             c.whatsapp,
-            c.telegram
+            c.telegram,
+            c.seo_title_prefix,
+            c.seo_description,
         from naju_contact_info  c
         join naju_local_group   g   on c.group_id = g.group_id
         join naju_group_account a   on c.group_id = a.group_id
@@ -141,6 +148,20 @@ foreach ($local_groups as $group) {
             <label for="telegram">Telegram-Kanal:</label>
             <input type="url" name="telegram" id="telegram" autocomplete="off"
                 placeholder="Link zum Telegram-Kanal" class="form-control" value="' . rex_escape($group['telegram']) . '">
+        </div>';
+    $content .= '
+        <div class="form-group">
+            <label for="seo-title">SEO-Titel:</label>
+            <input type="text" name="seo-title" id="seo-title" autocomplete="off"
+                placeholder="Seitentitel für Suchmaschinen" class="form-control" value="' . rex_escape($group['seo_title_prefix']) . '">
+        </div>';
+    $content .= '
+        <div class="form-group">
+            <label for="seo-description">Telegram-Kanal:</label>
+            <textarea name="seo-description" id="seo-description" autocomplete="off"
+                placeholder="Link zum Telegram-Kanal" class="form-control">' .
+                rex_escape($group['seo_description']) .
+            '</textarea>
         </div>';
     $content .= '<div class="form-group pull-right"><button type="submit" class="btn btn-primary">Aktualisieren</button></div>';
 
