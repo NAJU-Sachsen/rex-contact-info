@@ -50,7 +50,7 @@ if (rex::getUser()->isAdmin()) {
             c.whatsapp,
             c.telegram,
             c.seo_title_prefix,
-            c.seo_description,
+            c.seo_description
         from naju_contact_info c
         join naju_local_group g on c.group_id = g.group_id
 EOSQL;
@@ -72,7 +72,7 @@ EOSQL;
             c.whatsapp,
             c.telegram,
             c.seo_title_prefix,
-            c.seo_description,
+            c.seo_description
         from naju_contact_info  c
         join naju_local_group   g   on c.group_id = g.group_id
         join naju_group_account a   on c.group_id = a.group_id
