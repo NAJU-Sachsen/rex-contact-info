@@ -157,7 +157,7 @@ foreach ($local_groups as $group) {
         </div>';
     $content .= '
         <div class="form-group">
-            <label for="seo-description">Telegram-Kanal:</label>
+            <label for="seo-description">SEO-Beschreibung:</label>
             <textarea name="seo-description" id="seo-description" autocomplete="off"
                 placeholder="Beschreibung der Ortsgruppe für Suchmaschinen (wird von Seitenbeschreibungen überschrieben)"
                 class="form-control">' .
